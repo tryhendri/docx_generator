@@ -617,7 +617,11 @@ EOF
         def generate_document
           content = []
           @objects.each do |object|
-            content << object.generate
+            if object.class == String
+              content << object
+            else
+              content << object.generate
+            end
           end
 
           '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
