@@ -274,13 +274,8 @@ module DocxGenerator
                 </w:r>
               </w:p>
             </w:tc>
-          </w:tr>
-          <w:tr>
-              <w:trPr>
-                <w:cantSplit w:val=\"false\"/>
-              </w:trPr>" + generate_table_content(claim_details, total) +
-            "</w:tr>
-          <w:tr>
+          </w:tr>" + generate_table_content(claim_details, total) +
+            "<w:tr>
             <w:trPr>
               <w:cantSplit w:val=\"false\"/>
             </w:trPr>
@@ -387,8 +382,14 @@ module DocxGenerator
       end
 
       def generate_table_content(claim_details, total)
-        claim_details.each_with_index do |detail, no| 
-          return "<w:tc>
+        claim = []
+        claim_details.each_with_index do |detail, no|
+          claim[no] =
+          "<w:tr>
+            <w:trPr>
+              <w:cantSplit w:val=\"false\"/>
+            </w:trPr>
+            <w:tc>
             <w:tcPr>
               <w:tcW w:type=\"dxa\" w:w=\"523\"/>
               <w:tcBorders>
@@ -456,7 +457,6 @@ module DocxGenerator
                 <w:rPr>
                   <w:rFonts w:ascii=\"Calibri\" w:cs=\"Calibri\" w:hAnsi=\"Calibri\"/>
                   <w:color w:val=\"000000\"/>
-                  <w:shd w:fill=\"FFFF00\" w:val=\"clear\"/>
                 </w:rPr>
                 <w:t>#{detail.code_barang}</w:t>
               </w:r>
@@ -489,7 +489,6 @@ module DocxGenerator
                     <w:r>
                       <w:rPr>
                         <w:rFonts w:ascii=\"Calibri\" w:cs=\"Arial\" w:hAnsi=\"Calibri\"/>
-                        <w:shd w:fill=\"FFFF00\" w:val=\"clear\"/>
                       </w:rPr>
                       <w:t>#{detail.nama_barang}</w:t>
                     </w:r>
@@ -525,7 +524,6 @@ module DocxGenerator
                       <w:rPr>
                         <w:rFonts w:ascii=\"Calibri\" w:cs=\"Calibri\" w:hAnsi=\"Calibri\"/>
                         <w:color w:val=\"000000\"/>
-                        <w:shd w:fill=\"FFFF00\" w:val=\"clear\"/>
                       </w:rPr>
                       <w:t>#{detail.jumlah}</w:t>
                     </w:r>
@@ -562,7 +560,6 @@ module DocxGenerator
                       <w:rPr>
                         <w:rFonts w:ascii=\"Calibri\" w:cs=\"Calibri\" w:hAnsi=\"Calibri\"/>
                         <w:color w:val=\"000000\"/>
-                        <w:shd w:fill=\"FFFF00\" w:val=\"clear\"/>
                       </w:rPr>
                       <w:t>#{detail.biaya}</w:t>
                     </w:r>
@@ -581,13 +578,14 @@ module DocxGenerator
                       <w:rPr>
                         <w:rFonts w:ascii=\"Calibri\" w:cs=\"Calibri\" w:hAnsi=\"Calibri\"/>
                         <w:color w:val=\"000000\"/>
-                        <w:shd w:fill=\"FFFF00\" w:val=\"clear\"/>
                       </w:rPr>
                       <w:t>(inc. PPn)</w:t>
                     </w:r>
                   </w:p>
-                </w:tc>"
+                </w:tc>
+                </w:tr>"
         end
+        claim.join(" ")
       end
 
       def table(claim_details, total)
